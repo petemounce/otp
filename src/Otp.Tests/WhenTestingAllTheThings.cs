@@ -13,7 +13,17 @@ namespace Otp.Tests
         {
             using (var server = TestServer.Create<Startup>())
             {
-                var res = await server.HttpClient.GetAsync("/api/Otp").ConfigureAwait(false);
+                var res = await server.HttpClient.GetAsync("/api/otp").ConfigureAwait(false);
+                res.StatusCode.ShouldBe(HttpStatusCode.OK);
+            }
+        }
+
+        [Fact]
+        public async void CanGetOneOtp()
+        {
+            using (var server = TestServer.Create<Startup>())
+            {
+                var res = await server.HttpClient.GetAsync("/api/otp/1").ConfigureAwait(false);
                 res.StatusCode.ShouldBe(HttpStatusCode.OK);
             }
         }

@@ -23,9 +23,6 @@ namespace Otp.Web
         public MyHttpConfiguration()
         {
             this.MapHttpAttributeRoutes();
-
-            Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional}
-                );
         }
     }
 }
