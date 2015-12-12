@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.Owin.Testing;
 using Newtonsoft.Json;
 using Otp.Web;
@@ -28,19 +31,22 @@ namespace Otp.Tests
         public async void CanGenerateANewPasswordForGivenUser()
         {
             var now = DateTime.UtcNow;
-            var res = await _server.CreateRequest("/api/otp/pete").PostAsync().ConfigureAwait(false);
-            res.StatusCode.ShouldBe(HttpStatusCode.OK);
-            var body = await res.Content.ReadAsStringAsync();
-            var parsed = JsonConvert.DeserializeObject<OneTimePassword>(body);
+            var response = await CreatePasswordFor("pete");
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var parsed = await DtoFrom<OneTimePassword>(response);
             parsed.Password.ShouldSatisfyAllConditions(() => Guid.Parse(parsed.Password));
             parsed.ExpiresAt.ShouldBeInRange(now, now.AddMilliseconds(AllowedAgeInMillisecondsAccountingForExecutionTimeJitter));
         }
 
-        [Fact]
-        public async void CanGetOneOtp()
+        private static async Task<TDto> DtoFrom<TDto>(HttpResponseMessage res)
         {
-            var res = await _server.HttpClient.GetAsync("/api/otp/1").ConfigureAwait(false);
-            res.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var body = await res.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TDto>(body);
+        }
+
+        private ConfiguredTaskAwaitable<HttpResponseMessage> CreatePasswordFor(string userId)
+        {
+            return _server.CreateRequest($"/api/otp/{userId}").PostAsync().ConfigureAwait(false);
         }
     }
 }
