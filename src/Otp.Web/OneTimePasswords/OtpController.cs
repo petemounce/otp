@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Otp.Web.OneTimePasswords
@@ -6,36 +7,30 @@ namespace Otp.Web.OneTimePasswords
     [RoutePrefix("api/otp")]
     public class OtpController : ApiController
     {
-        [HttpGet, Route("")]
-        // GET: api/Otp
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        [HttpGet, Route("{id}")]
-        // GET: api/Otp/5
-        public string Get(int id)
+        [HttpGet, Route("{userId}")]
+        public string Get(string userId)
         {
             return "value";
         }
 
-        [HttpPost, Route("")]
-        // POST: api/Otp
-        public void Post([FromBody]string value)
+        [HttpPost, Route("{userId}")]
+        public async Task<IHttpActionResult> Post(string userId)
         {
+            return Ok(new OneTimePassword());
         }
+    }
 
-        [HttpPut, Route("")]
-        // PUT: api/Otp/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+    public class OneTimePassword
+    {
+        private string Username { set; get; }
+        public string Password { get; private set; }
+        public DateTime ExpiresAt { get; private set; }
 
-        [HttpDelete, Route("")]
-        // DELETE: api/Otp/5
-        public void Delete(int id)
+        public OneTimePassword()
         {
+            Password = Guid.NewGuid().ToString();
+            ExpiresAt = DateTime.UtcNow.AddSeconds(30);
+            Username = "NOTE: security sensitive. Don't set or expose me; full credential set should not be exposed over the wire in a single lump.";
         }
     }
 }
