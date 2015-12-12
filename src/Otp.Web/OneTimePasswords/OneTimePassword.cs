@@ -4,12 +4,18 @@ namespace Otp.Web.OneTimePasswords
 {
     public class OneTimePassword
     {
-        public OneTimePassword()
+        public OneTimePassword(TimeSpan allowedAge = default(TimeSpan))
         {
             Password = Guid.NewGuid().ToString();
-            ExpiresAt = DateTime.UtcNow.AddSeconds(30);
+            SetExpiresAtWithDefaultUnlessProvided(allowedAge);
             Username =
                 "NOTE: security sensitive. Don't set or expose me; full credential set should not be exposed over the wire in a single lump.";
+        }
+
+        private void SetExpiresAtWithDefaultUnlessProvided(TimeSpan allowedAge)
+        {
+            if (allowedAge == default(TimeSpan)) allowedAge = TimeSpan.FromSeconds(30);
+            ExpiresAt = DateTime.UtcNow.Add(allowedAge);
         }
 
         private string Username { set; get; }

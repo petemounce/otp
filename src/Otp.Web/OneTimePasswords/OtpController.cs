@@ -7,10 +7,12 @@ namespace Otp.Web.OneTimePasswords
     public class OtpController : ApiController
     {
         private readonly IStoreUsers _store;
+        private readonly IConfig _config;
 
-        public OtpController(IStoreUsers store)
+        public OtpController(IStoreUsers store, IConfig config)
         {
             _store = store;
+            _config = config;
         }
 
         [HttpPut, Route("{userId}/passwords")]
@@ -23,7 +25,7 @@ namespace Otp.Web.OneTimePasswords
         [HttpPost, Route("{userId}")]
         public async Task<IHttpActionResult> Post(string userId)
         {
-            var otp = await _store.NewPasswordForAsync(userId);
+            var otp = await _store.NewPasswordForAsync(userId, _config.AllowedAgeForPasswords);
             return Ok(otp);
         }
     }

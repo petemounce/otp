@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Otp.Web.OneTimePasswords
@@ -5,6 +6,6 @@ namespace Otp.Web.OneTimePasswords
     public interface IStoreUsers
     {
         Task<bool> UserExistsAsync(string userId);
-        Task<OneTimePassword> NewPasswordForAsync(string userId);
+        Task<OneTimePassword> NewPasswordForAsync(string userId, TimeSpan allowedAge = default(TimeSpan));
     }
 }

@@ -18,7 +18,7 @@ namespace Otp.Web.OneTimePasswords
             return Task.Run(() => _data.ContainsKey(userId));
         }
 
-        public Task<OneTimePassword> NewPasswordForAsync(string userId)
+        public Task<OneTimePassword> NewPasswordForAsync(string userId, TimeSpan allowedAge = default(TimeSpan))
         {
             return Task.Run(() =>
             {
@@ -26,7 +26,7 @@ namespace Otp.Web.OneTimePasswords
                 {
                     _data[userId] = new List<OneTimePassword>();
                 }
-                var otp = new OneTimePassword();
+                var otp = new OneTimePassword(allowedAge);
                 _data[userId].Add(otp);
                 return otp;
             });

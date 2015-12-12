@@ -9,7 +9,7 @@ namespace Otp.Web
 {
     public class Startup
     {
-        public Startup(HttpConfiguration config)
+        public Startup(HttpConfiguration config = null)
         {
             Config = config ?? new MyHttpConfiguration();
         }
@@ -30,6 +30,7 @@ namespace Otp.Web
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterType<InMemoryStorage>().As<IStoreUsers>().SingleInstance();
+            builder.RegisterType<Config>().As<IConfig>();
             var container = builder.Build();
             return container;
         }
