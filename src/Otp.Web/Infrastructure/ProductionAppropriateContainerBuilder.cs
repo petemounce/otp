@@ -7,7 +7,7 @@ namespace Otp.Web.Infrastructure
     {
         public ProductionAppropriateContainerBuilder()
         {
-            this.RegisterType<Config>().As<IConfig>();
+            this.RegisterType<ConfigDataForOneTimePasswords>().As<IConfigDataForOneTimePasswords>();
         }
     }
 }

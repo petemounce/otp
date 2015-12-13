@@ -41,9 +41,9 @@ namespace Otp.Tests
             LogManager.Configuration = configuration;
         }
 
-        protected virtual IConfig GivenConfig()
+        protected virtual IConfigDataForOneTimePasswords GivenConfig()
         {
-            var config = new Mock<IConfig>();
+            var config = new Mock<IConfigDataForOneTimePasswords>();
             config.SetupGet(x => x.AllowedAgeForPasswords).Returns(TimeSpan.FromMilliseconds(1));
             return config.Object;
         }

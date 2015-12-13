@@ -9,9 +9,9 @@ namespace Otp.Tests.VerifyingPasswords
 {
     public class AndPasswordHasNotBeenUsed : AndUserExists
     {
-        protected override IConfig GivenConfig()
+        protected override IConfigDataForOneTimePasswords GivenConfig()
         {
-            var config = new Mock<IConfig>();
+            var config = new Mock<IConfigDataForOneTimePasswords>();
             config.SetupGet(x => x.AllowedAgeForPasswords)
                 .Returns(TimeSpan.FromSeconds(40));
             return config.Object;

@@ -13,7 +13,7 @@ namespace Otp.Tests.Internals
 
         public IocRegistrationSanity()
         {
-            _container = new TestsAppropriateContainerBuilder(new Mock<IConfig>().Object).Build();
+            _container = new TestsAppropriateContainerBuilder(new Mock<IConfigDataForOneTimePasswords>().Object).Build();
         }
 
         public void Dispose()

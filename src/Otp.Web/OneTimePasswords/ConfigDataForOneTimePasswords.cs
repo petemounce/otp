@@ -2,12 +2,13 @@
 
 namespace Otp.Web.OneTimePasswords
 {
-    internal class Config : IConfig
+    internal class ConfigDataForOneTimePasswords : IConfigDataForOneTimePasswords
     {
-        public Config()
+        public ConfigDataForOneTimePasswords()
         {
             AllowedAgeForPasswords = TimeSpan.FromSeconds(30);
         }
+
         public TimeSpan AllowedAgeForPasswords { get; set; }
     }
 }

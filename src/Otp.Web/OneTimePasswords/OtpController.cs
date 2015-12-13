@@ -9,10 +9,10 @@ namespace Otp.Web.OneTimePasswords
     public class OtpController : ApiController
     {
         private readonly IStoreUsers _store;
-        private readonly IConfig _config;
+        private readonly IConfigDataForOneTimePasswords _config;
         private readonly IValidator<OneTimePassword> _checker;
 
-        public OtpController(IStoreUsers store, IConfig config, IValidator<OneTimePassword> checker)
+        public OtpController(IStoreUsers store, IConfigDataForOneTimePasswords config, IValidator<OneTimePassword> checker)
         {
             _store = store;
             _config = config;

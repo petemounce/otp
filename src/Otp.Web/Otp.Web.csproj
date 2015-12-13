@@ -150,8 +150,8 @@
     <Compile Include="Infrastructure\DiagnosticsModule.cs" />
     <Compile Include="Infrastructure\MyHttpConfiguration.cs" />
     <Compile Include="Infrastructure\ProductionAppropriateContainerBuilder.cs" />
-    <Compile Include="OneTimePasswords\Config.cs" />
-    <Compile Include="OneTimePasswords\IConfig.cs" />
+    <Compile Include="OneTimePasswords\ConfigDataForOneTimePasswords.cs" />
+    <Compile Include="OneTimePasswords\IConfigDataForOneTimePasswords.cs" />
     <Compile Include="OneTimePasswords\IStoreUsers.cs" />
     <Compile Include="OneTimePasswords\OneTimePassword.cs" />
     <Compile Include="OneTimePasswords\OneTimePasswordVerificationRequest.cs" />

@@ -7,9 +7,9 @@ namespace Otp.Tests
 {
     public class TestsAppropriateContainerBuilder : ContainerBuilderForDependenciesThatRemainInProcess
     {
-        public TestsAppropriateContainerBuilder(IConfig config)
+        public TestsAppropriateContainerBuilder(IConfigDataForOneTimePasswords config)
         {
-            this.RegisterInstance(config).As<IConfig>();
+            this.RegisterInstance(config).As<IConfigDataForOneTimePasswords>();
         }
     }
 }
