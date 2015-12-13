@@ -38,7 +38,7 @@ namespace Otp.Web.OneTimePasswords
         {
             await Task.Run(() =>
             {
-                _data[userId].Single(otp => otp.Password.Equals(password)).HasBeenUsed = true;
+                _data[userId].Single(otp => otp.Password.Equals(password)).UsageAttempts.Add(DateTime.UtcNow);
             });
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FluentValidation;
 
 namespace Otp.Web.OneTimePasswords
@@ -13,8 +14,8 @@ namespace Otp.Web.OneTimePasswords
             RuleFor(x => x.ExpiresAt)
                 .GreaterThanOrEqualTo(DateTime.UtcNow)
                 .When(x => x != null);
-            RuleFor(x => x.HasBeenUsed)
-                .Must(x => x == false)
+            RuleFor(x => x.UsageAttempts)
+                .Must(x => !x.Any())
                 .When(x => x != null);
         }
     }

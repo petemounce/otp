@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Otp.Web.OneTimePasswords
 {
-    [DebuggerDisplay("{Password} {ExpiresAt} {HasBeenUsed}")]
+    [DebuggerDisplay("{Password} {ExpiresAt} {UsageAttempts}")]
     public class OneTimePassword
     {
         public OneTimePassword(TimeSpan allowedAge = default(TimeSpan))
@@ -12,6 +13,7 @@ namespace Otp.Web.OneTimePasswords
             SetExpiresAtWithDefaultUnlessProvided(allowedAge);
             Username =
                 "NOTE: security sensitive. Don't set or expose me; full credential set should not be exposed over the wire in a single lump.";
+            UsageAttempts = new List<DateTime>();
         }
 
         private void SetExpiresAtWithDefaultUnlessProvided(TimeSpan allowedAge)
@@ -23,6 +25,6 @@ namespace Otp.Web.OneTimePasswords
         private string Username { set; get; }
         public string Password { get; private set; }
         public DateTime ExpiresAt { get; private set; }
-        public bool HasBeenUsed { get; set; }
+        public ICollection<DateTime> UsageAttempts { get; private set; }
     }
 }
