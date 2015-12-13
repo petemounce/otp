@@ -7,9 +7,9 @@ git clone https://github.com/petemounce/otp.git
 cd otp
 nuget restore
 start otp.sln
-# hit F5 to debug, and you should see some swagger docs in your browser.
-# if you don't, browse to /swagger/ui/index to see them.
-
+# hit F5 to debug
+start "http://localhost:45457/swagger/ui/index"
+# should see swagger docs there in your browser
 # explore the tests project.
 ```
 
