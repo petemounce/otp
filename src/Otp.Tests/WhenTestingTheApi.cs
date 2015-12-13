@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Testing;
-using Newtonsoft.Json;
+using Moq;
+using Newtonsoft.Json.Linq;
 using Otp.Web;
+using Otp.Web.OneTimePasswords;
 
 namespace Otp.Tests
 {
@@ -16,9 +17,17 @@ namespace Otp.Tests
 
         protected WhenTestingTheApi()
         {
-            _server = TestServer.Create<Startup>();
+            var builder = new TestsAppropriateContainerBuilder(GivenConfig());
+            _server = TestServer.Create(app => new Startup(builder).Configuration(app));
             Given().Wait();
             When().Wait();
+        }
+
+        protected virtual IConfig GivenConfig()
+        {
+            var config = new Mock<IConfig>();
+            config.SetupGet(x => x.AllowedAgeForPasswords).Returns(TimeSpan.FromMilliseconds(1));
+            return config.Object;
         }
 
         protected abstract Task Given();
@@ -29,22 +38,22 @@ namespace Otp.Tests
             _server?.Dispose();
         }
 
-        protected async Task<TDto> DtoFrom<TDto>(HttpResponseMessage res)
+        protected async Task<JObject> DtoFrom(HttpResponseMessage res)
         {
             var body = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<TDto>(body);
+            return JObject.Parse(body);
         }
 
-        protected ConfiguredTaskAwaitable<HttpResponseMessage> CreatePasswordFor(string userId)
+        protected async Task<HttpResponseMessage> CreatePasswordFor(string userId)
         {
-            return _server.CreateRequest($"/api/otp/{userId}").PostAsync().ConfigureAwait(false);
+            return await _server.CreateRequest($"/api/otp/{userId}").PostAsync();
         }
 
-        protected ConfiguredTaskAwaitable<HttpResponseMessage> AttemptPasswordVerification(string userId, string content)
+        protected async Task<HttpResponseMessage> AttemptPasswordVerification(string userId, string content)
         {
-            return _server.CreateRequest($"/api/otp/{userId}/passwords")
+            return await _server.CreateRequest($"/api/otp/{userId}/passwords")
                 .And(message => message.Content = new StringContent(content, Encoding.UTF8, "application/json"))
-                .SendAsync("PUT").ConfigureAwait(false);
+                .SendAsync("PUT");
         }
     }
 }

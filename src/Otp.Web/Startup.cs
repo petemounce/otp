@@ -1,51 +1,34 @@
-﻿using System.Reflection;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Autofac;
-using Autofac.Integration.WebApi;
-using Otp.Web.OneTimePasswords;
+using Microsoft.Owin;
+using Otp.Web;
 using Owin;
 
+[assembly: OwinStartup(typeof(Startup))]
 namespace Otp.Web
 {
     public class Startup
     {
-        public Startup(HttpConfiguration config = null)
+        private readonly IContainer _container;
+
+        public Startup(ContainerBuilder builder = null)
         {
-            Config = config ?? new MyHttpConfiguration();
+            _container = CreateContainer(builder);
+            Config = new MyHttpConfiguration(_container);
+        }
+
+        private static IContainer CreateContainer(ContainerBuilder builder)
+        {
+            return (builder ?? new ProductionAppropriateContainerBuilder()).Build();
         }
 
         public HttpConfiguration Config { get; private set; }
 
         public void Configuration(IAppBuilder app)
         {
-            var container = MakeContainer();
-            Config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-            app.UseAutofacMiddleware(container);
+            app.UseAutofacMiddleware(_container);
             app.UseAutofacWebApi(Config);
             app.UseWebApi(Config);
-        }
-
-        private static IContainer MakeContainer()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterType<InMemoryStorage>().As<IStoreUsers>().SingleInstance();
-            builder.RegisterType<Config>().As<IConfig>();
-            var container = builder.Build();
-            return container;
-        }
-    }
-
-    public class MyHttpConfiguration : HttpConfiguration
-    {
-        public MyHttpConfiguration()
-        {
-            ConfigureRouting();
-        }
-
-        private void ConfigureRouting()
-        {
-            this.MapHttpAttributeRoutes();
         }
     }
 }

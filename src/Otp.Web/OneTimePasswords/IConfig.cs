@@ -4,6 +4,6 @@ namespace Otp.Web.OneTimePasswords
 {
     public interface IConfig
     {
-        TimeSpan AllowedAgeForPasswords { get; }
+        TimeSpan AllowedAgeForPasswords { get; set; }
     }
 }

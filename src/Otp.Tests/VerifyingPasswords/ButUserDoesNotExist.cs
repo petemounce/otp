@@ -17,7 +17,7 @@ namespace Otp.Tests.VerifyingPasswords
         }
 
         [Fact]
-        public async void ShouldGet404NotFound()
+        public void ShouldGet404NotFound()
         {
             Response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         }

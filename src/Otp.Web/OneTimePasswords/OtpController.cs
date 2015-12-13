@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Otp.Web.OneTimePasswords
@@ -16,10 +18,16 @@ namespace Otp.Web.OneTimePasswords
         }
 
         [HttpPut, Route("{userId}/passwords")]
-        public async Task<IHttpActionResult> Put(string userId, [FromBody] string password)
+        public async Task<IHttpActionResult> Put(string userId, [FromBody] OneTimePasswordVerificationRequest body)
         {
-            if (!await _store.UserExistsAsync(userId)) return NotFound();
-            return BadRequest();
+            var tokens = await _store.TokensByUserIdAsync(userId);
+            if (!tokens.Any()) return NotFound();
+            var match = tokens.SingleOrDefault(t => t.Password.Equals(body.Password));
+            if (match == null) return BadRequest();
+            if (DateTime.UtcNow > match.ExpiresAt) return BadRequest();
+            if (match.HasBeenUsed) return BadRequest();
+            await _store.ConsumeTokenAsync(userId, body.Password);
+            return Ok();
         }
 
         [HttpPost, Route("{userId}")]

@@ -12,13 +12,4 @@ namespace Otp.Tests.VerifyingPasswords
             Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
     }
-
-    public class ButPasswordHasBeenUsed : AndUserExists
-    {
-        [Fact]
-        public void ShouldGet400BadRequest()
-        {
-            Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        }
-    }
 }

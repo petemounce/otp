@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Otp.Web.OneTimePasswords;
 
 namespace Otp.Tests.VerifyingPasswords
@@ -11,18 +12,14 @@ namespace Otp.Tests.VerifyingPasswords
         private string _content;
         protected HttpResponseMessage Response;
         private string _existingUserId;
-        protected OneTimePassword Created;
 
-        protected override Task Given()
+        protected override async Task Given()
         {
-            return Task.Run(async () => 
-            {
-                _existingUserId = GivenExistingUserId();
-                _userId = GivenUserIdOnRequest();
-                var pw = await CreatePasswordFor(_existingUserId);
-                var otp = await DtoFrom<OneTimePassword>(pw);
-                _content = JsonConvert.SerializeObject(new { Password = GivenPasswordOnRequest(otp) });
-            });
+            _existingUserId = GivenExistingUserId();
+            _userId = GivenUserIdOnRequest();
+            var res = await CreatePasswordFor(_existingUserId);
+            var otp = await DtoFrom(res);
+            _content = JsonConvert.SerializeObject(new OneTimePasswordVerificationRequest { Password = GivenPasswordOnRequest(otp) });
         }
 
         protected override async Task When()
@@ -34,9 +31,9 @@ namespace Otp.Tests.VerifyingPasswords
 
         protected abstract string GivenUserIdOnRequest();
 
-        protected virtual string GivenPasswordOnRequest(OneTimePassword otp)
+        protected virtual string GivenPasswordOnRequest(JObject otp)
         {
-            return otp.Password;
+            return (string)otp["Password"];
         }
     }
 }

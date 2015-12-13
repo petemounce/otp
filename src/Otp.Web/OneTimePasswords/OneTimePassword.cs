@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Otp.Web.OneTimePasswords
 {
+    [DebuggerDisplay("{Password} {ExpiresAt} {HasBeenUsed}")]
     public class OneTimePassword
     {
         public OneTimePassword(TimeSpan allowedAge = default(TimeSpan))
@@ -21,5 +23,6 @@ namespace Otp.Web.OneTimePasswords
         private string Username { set; get; }
         public string Password { get; private set; }
         public DateTime ExpiresAt { get; private set; }
+        public bool HasBeenUsed { get; set; }
     }
 }

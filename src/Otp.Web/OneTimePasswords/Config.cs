@@ -8,6 +8,6 @@ namespace Otp.Web.OneTimePasswords
         {
             AllowedAgeForPasswords = TimeSpan.FromSeconds(30);
         }
-        public TimeSpan AllowedAgeForPasswords { get; }
+        public TimeSpan AllowedAgeForPasswords { get; set; }
     }
 }

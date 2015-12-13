@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Otp.Web.OneTimePasswords
@@ -13,9 +14,10 @@ namespace Otp.Web.OneTimePasswords
         {
             _data = new ConcurrentDictionary<string, ICollection<OneTimePassword>>(StringComparer.InvariantCulture);
         }
-        public Task<bool> UserExistsAsync(string userId)
+
+        public Task<ICollection<OneTimePassword>> TokensByUserIdAsync(string userId)
         {
-            return Task.Run(() => _data.ContainsKey(userId));
+            return Task.Run(() => !_data.ContainsKey(userId) ? new List<OneTimePassword>() : _data[userId]);
         }
 
         public Task<OneTimePassword> NewPasswordForAsync(string userId, TimeSpan allowedAge = default(TimeSpan))
@@ -29,6 +31,14 @@ namespace Otp.Web.OneTimePasswords
                 var otp = new OneTimePassword(allowedAge);
                 _data[userId].Add(otp);
                 return otp;
+            });
+        }
+
+        public async Task ConsumeTokenAsync(string userId, string password)
+        {
+            await Task.Run(() =>
+            {
+                _data[userId].Single(otp => otp.Password.Equals(password)).HasBeenUsed = true;
             });
         }
     }

@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using Otp.Web.OneTimePasswords;
+using Newtonsoft.Json.Linq;
 using Shouldly;
 using Xunit;
 
@@ -8,15 +8,12 @@ namespace Otp.Tests.VerifyingPasswords
 {
     public class ButPasswordDoesNotExist : AndUserExists
     {
-        protected override string GivenPasswordOnRequest(OneTimePassword otp)
+        protected override string GivenPasswordOnRequest(JObject otp)
         {
             return Guid.NewGuid().ToString();
         }
 
         [Fact]
-        public async void VerifyPasswordThatDoesNotExistForUserShouldGive400()
-        {
-            Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        }
+        public void VerifyPasswordThatDoesNotExistForUserShouldGive400() => Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 }
