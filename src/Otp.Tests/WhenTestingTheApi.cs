@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Testing;
 using Moq;
 using Newtonsoft.Json.Linq;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using Otp.Web;
 using Otp.Web.OneTimePasswords;
 
@@ -18,9 +21,24 @@ namespace Otp.Tests
         protected WhenTestingTheApi()
         {
             var builder = new TestsAppropriateContainerBuilder(GivenConfig());
+            ConfigureLogging();
             _server = TestServer.Create(app => new Startup(builder).Configuration(app));
             Given().Wait();
             When().Wait();
+        }
+
+        private static void ConfigureLogging()
+        {
+            var configuration = new LoggingConfiguration();
+            var mt = new MemoryTarget { Name = "memory", Layout = "${level} ${message} ${exception}" };
+            var mr = new LoggingRule("*", LogLevel.Trace, mt);
+            configuration.AddTarget(mt);
+            configuration.LoggingRules.Add(mr);
+            var ct = new ConsoleTarget { Name = "console", Layout = "${level} ${message} ${exception}" };
+            var cr = new LoggingRule("*", LogLevel.Trace, ct);
+            configuration.AddTarget(ct);
+            configuration.LoggingRules.Add(cr);
+            LogManager.Configuration = configuration;
         }
 
         protected virtual IConfig GivenConfig()

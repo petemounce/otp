@@ -59,6 +59,34 @@
       <HintPath>..\..\packages\Autofac.WebApi2.Owin.3.3.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=5.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentValidation.5.6.2.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.WebApi, Version=5.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentValidation.WebApi.5.6.2.0\lib\Net45\FluentValidation.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JE.ApiExceptions.WebApi.NLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JE.ApiExceptions.WebApi.NLog.1.0.1.10\lib\net452\JE.ApiExceptions.WebApi.NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JE.ApiValidation.DTOs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JE.ApiValidation.DTOs.1.0.9.65\lib\net452\JE.ApiValidation.DTOs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JE.ApiValidation.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JE.ApiValidation.WebApi.FluentValidation.1.0.9.65\lib\net452\JE.ApiValidation.Shared.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JE.ApiValidation.WebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JE.ApiValidation.WebApi.1.0.9.65\lib\net452\JE.ApiValidation.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JE.ApiValidation.WebApi.FluentValidation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JE.ApiValidation.WebApi.FluentValidation.1.0.9.65\lib\net452\JE.ApiValidation.WebApi.FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -66,6 +94,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.1.2\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -112,8 +144,12 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContainerBuilderForDependenciesThatRemainInProcess.cs" />
-    <Compile Include="MyHttpConfiguration.cs" />
+    <Compile Include="Infrastructure\AutofacFluentValidationModule.cs" />
+    <Compile Include="Infrastructure\AutofacValidatorFactory.cs" />
+    <Compile Include="Infrastructure\ContainerBuilderForDependenciesThatRemainInProcess.cs" />
+    <Compile Include="Infrastructure\DiagnosticsModule.cs" />
+    <Compile Include="Infrastructure\MyHttpConfiguration.cs" />
+    <Compile Include="Infrastructure\ProductionAppropriateContainerBuilder.cs" />
     <Compile Include="OneTimePasswords\Config.cs" />
     <Compile Include="OneTimePasswords\IConfig.cs" />
     <Compile Include="OneTimePasswords\IStoreUsers.cs" />
@@ -121,7 +157,8 @@
     <Compile Include="OneTimePasswords\OneTimePasswordVerificationRequest.cs" />
     <Compile Include="OneTimePasswords\OtpController.cs" />
     <Compile Include="OneTimePasswords\InMemoryStorage.cs" />
-    <Compile Include="ProductionAppropriateContainerBuilder.cs" />
+    <Compile Include="OneTimePasswords\RequestValidationFulesForPasswordVerification.cs" />
+    <Compile Include="OneTimePasswords\RulesForOneTimePasswords.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

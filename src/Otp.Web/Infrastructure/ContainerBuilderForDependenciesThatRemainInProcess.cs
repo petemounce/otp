@@ -3,7 +3,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using Otp.Web.OneTimePasswords;
 
-namespace Otp.Web
+namespace Otp.Web.Infrastructure
 {
     public abstract class ContainerBuilderForDependenciesThatRemainInProcess : ContainerBuilder
     {
@@ -11,6 +11,8 @@ namespace Otp.Web
         {
             this.RegisterApiControllers(Assembly.GetExecutingAssembly());
             this.RegisterType<InMemoryStorage>().As<IStoreUsers>().SingleInstance();
+            this.RegisterModule<AutofacFluentValidationModule>();
+            this.RegisterModule<DiagnosticsModule>();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Shouldly;
 using Xunit;
@@ -15,5 +16,12 @@ namespace Otp.Tests.VerifyingPasswords
 
         [Fact]
         public void VerifyPasswordThatDoesNotExistForUserShouldGive400() => Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        [Fact]
+        public async Task ShouldGetStandardErrorResponseBody()
+        {
+            var body = await DtoFrom(Response);
+            ((int)body["Code"]).ShouldBe(45000);
+        }
     }
 }

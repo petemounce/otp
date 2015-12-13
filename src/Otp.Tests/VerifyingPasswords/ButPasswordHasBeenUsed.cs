@@ -31,5 +31,12 @@ namespace Otp.Tests.VerifyingPasswords
         {
             Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
+
+        [Fact]
+        public async Task ShouldGetStandardErrorResponseBody()
+        {
+            var body = await DtoFrom(Response);
+            ((int)body["Code"]).ShouldBe(45000);
+        }
     }
 }

@@ -1,7 +1,7 @@
 using Autofac;
 using Otp.Web.OneTimePasswords;
 
-namespace Otp.Web
+namespace Otp.Web.Infrastructure
 {
     public class ProductionAppropriateContainerBuilder : ContainerBuilderForDependenciesThatRemainInProcess
     {

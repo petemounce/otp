@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using FluentValidation;
 
 namespace Otp.Web.OneTimePasswords
 {
@@ -10,11 +10,13 @@ namespace Otp.Web.OneTimePasswords
     {
         private readonly IStoreUsers _store;
         private readonly IConfig _config;
+        private readonly IValidator<OneTimePassword> _checker;
 
-        public OtpController(IStoreUsers store, IConfig config)
+        public OtpController(IStoreUsers store, IConfig config, IValidator<OneTimePassword> checker)
         {
             _store = store;
             _config = config;
+            _checker = checker;
         }
 
         [HttpPut, Route("{userId}/passwords")]
@@ -23,9 +25,7 @@ namespace Otp.Web.OneTimePasswords
             var tokens = await _store.TokensByUserIdAsync(userId);
             if (!tokens.Any()) return NotFound();
             var match = tokens.SingleOrDefault(t => t.Password.Equals(body.Password));
-            if (match == null) return BadRequest();
-            if (DateTime.UtcNow > match.ExpiresAt) return BadRequest();
-            if (match.HasBeenUsed) return BadRequest();
+            await _checker.ValidateAndThrowAsync(match);
             await _store.ConsumeTokenAsync(userId, body.Password);
             return Ok();
         }

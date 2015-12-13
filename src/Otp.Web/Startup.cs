@@ -2,6 +2,7 @@
 using Autofac;
 using Microsoft.Owin;
 using Otp.Web;
+using Otp.Web.Infrastructure;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
