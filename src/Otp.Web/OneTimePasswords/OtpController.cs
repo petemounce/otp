@@ -5,6 +5,9 @@ using FluentValidation;
 
 namespace Otp.Web.OneTimePasswords
 {
+    /// <summary>
+    /// Operations relating to one time passwords
+    /// </summary>
     [RoutePrefix("api/otp")]
     public class OtpController : ApiController
     {
@@ -19,6 +22,14 @@ namespace Otp.Web.OneTimePasswords
             _checker = checker;
         }
 
+        /// <summary>
+        /// Use a one time password for a user
+        /// </summary>
+        /// <param name="userId">the user id</param>
+        /// <param name="body">the request body</param>
+        /// <response code="200">password was valid for user</response>
+        /// <response code="400">Invalid request, check standard error response body</response>
+        /// <response code="404">User not found</response>
         [HttpPut, Route("{userId}/passwords")]
         public async Task<IHttpActionResult> Put(string userId, [FromBody] OneTimePasswordVerificationRequest body)
         {
@@ -30,6 +41,12 @@ namespace Otp.Web.OneTimePasswords
             return Ok();
         }
 
+        /// <summary>
+        /// Create a new one time password for a user
+        /// </summary>
+        /// <remarks>Will create the user if not found</remarks>
+        /// <param name="userId">the user id</param>
+        /// <response code="200">one time password created</response>
         [HttpPost, Route("{userId}")]
         public async Task<IHttpActionResult> Post(string userId)
         {

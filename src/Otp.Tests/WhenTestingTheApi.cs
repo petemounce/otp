@@ -16,13 +16,13 @@ namespace Otp.Tests
     public abstract class WhenTestingTheApi : IDisposable
     {
         protected const int AllowedAgeInMillisecondsAccountingForExecutionTimeJitter = 32000;
-        private readonly TestServer _server;
+        protected readonly TestServer Server;
 
         protected WhenTestingTheApi()
         {
             var builder = new TestsAppropriateContainerBuilder(GivenConfig());
             ConfigureLogging();
-            _server = TestServer.Create(app => new Startup(builder).Configuration(app));
+            Server = TestServer.Create(app => new Startup(builder).Configuration(app));
             Given().Wait();
             When().Wait();
         }
@@ -53,23 +53,27 @@ namespace Otp.Tests
 
         public void Dispose()
         {
-            _server?.Dispose();
+            Server?.Dispose();
         }
 
         protected async Task<JObject> DtoFrom(HttpResponseMessage res)
         {
-            var body = await res.Content.ReadAsStringAsync();
-            return JObject.Parse(body);
+            return JObject.Parse(await RawBody(res));
+        }
+
+        protected Task<string> RawBody(HttpResponseMessage res)
+        {
+            return res.Content.ReadAsStringAsync();
         }
 
         protected async Task<HttpResponseMessage> CreatePasswordFor(string userId)
         {
-            return await _server.CreateRequest($"/api/otp/{userId}").PostAsync();
+            return await Server.CreateRequest($"/api/otp/{userId}").PostAsync();
         }
 
         protected async Task<HttpResponseMessage> AttemptPasswordVerification(string userId, string content)
         {
-            return await _server.CreateRequest($"/api/otp/{userId}/passwords")
+            return await Server.CreateRequest($"/api/otp/{userId}/passwords")
                 .And(message => message.Content = new StringContent(content, Encoding.UTF8, "application/json"))
                 .SendAsync("PUT");
         }

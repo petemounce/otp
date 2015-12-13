@@ -111,6 +111,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Documentation\WhenListingDocJson.cs" />
+    <Compile Include="Documentation\WhenTestingDocs.cs" />
+    <Compile Include="Documentation\WhenVistingUi.cs" />
     <Compile Include="GeneratingPasswords\WhenGeneratingANewPasswordForGivenUser.cs" />
     <Compile Include="Internals\IocRegistrationSanity.cs" />
     <Compile Include="TestsAppropriateContainerBuilder.cs" />

@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Otp.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -116,6 +117,10 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Swashbuckle.Core.5.2.2\lib\net40\Swashbuckle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -157,6 +162,7 @@
     <Compile Include="Infrastructure\AutofacValidatorFactory.cs" />
     <Compile Include="Infrastructure\ContainerBuilderForDependenciesThatRemainInProcess.cs" />
     <Compile Include="Infrastructure\DiagnosticsModule.cs" />
+    <Compile Include="Infrastructure\Docs\AddDefaultErrorResponse.cs" />
     <Compile Include="Infrastructure\MyHttpConfiguration.cs" />
     <Compile Include="Infrastructure\ProductionAppropriateContainerBuilder.cs" />
     <Compile Include="OneTimePasswords\ConfigDataForOneTimePasswords.cs" />

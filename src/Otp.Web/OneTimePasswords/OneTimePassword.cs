@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Otp.Web.OneTimePasswords
 {
+    /// <summary>
+    /// Resource representing a one-time password
+    /// </summary>
     [DebuggerDisplay("{Password} {ExpiresAt} {UsageAttempts}")]
     public class OneTimePassword
     {
@@ -23,8 +26,17 @@ namespace Otp.Web.OneTimePasswords
         }
 
         private string Username { set; get; }
-        public string Password { get; private set; }
-        public DateTime ExpiresAt { get; private set; }
-        public ICollection<DateTime> UsageAttempts { get; private set; }
+        /// <summary>
+        /// The password
+        /// </summary>
+         public string Password { get; private set; }
+        /// <summary>
+        /// When this password expires (UTC)
+        /// </summary>
+         public DateTime ExpiresAt { get; private set; }
+        /// <summary>
+        /// When the OTP was attempted to be used
+        /// </summary>
+         public ICollection<DateTime> UsageAttempts { get; private set; }
     }
 }
