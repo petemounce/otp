@@ -111,6 +111,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\WhenAnExceptionGoesUncaught.cs" />
     <Compile Include="Documentation\WhenListingDocJson.cs" />
     <Compile Include="Documentation\WhenTestingDocs.cs" />
     <Compile Include="Documentation\WhenVistingUi.cs" />

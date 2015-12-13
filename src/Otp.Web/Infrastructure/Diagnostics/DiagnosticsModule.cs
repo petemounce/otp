@@ -2,7 +2,7 @@ using System.Web.Http.ExceptionHandling;
 using Autofac;
 using JE.ApiExceptions.WebApi.NLog;
 
-namespace Otp.Web.Infrastructure
+namespace Otp.Web.Infrastructure.Diagnostics
 {
     public class DiagnosticsModule : Module
     {

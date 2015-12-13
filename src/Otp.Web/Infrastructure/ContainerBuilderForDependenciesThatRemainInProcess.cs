@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using Autofac.Integration.WebApi;
+using Otp.Web.Infrastructure.Diagnostics;
 using Otp.Web.OneTimePasswords;
 
 namespace Otp.Web.Infrastructure
