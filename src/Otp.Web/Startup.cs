@@ -12,6 +12,10 @@ namespace Otp.Web
     {
         private readonly IContainer _container;
 
+        public Startup() : this(null)
+        {
+        }
+
         public Startup(ContainerBuilder builder = null)
         {
             _container = CreateContainer(builder);
